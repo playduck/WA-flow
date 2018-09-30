@@ -7,6 +7,7 @@ CoordMode Pixel
 
 	;Read Variables
 	IniRead, Activation, Var.ini,Var,Activation
+	IniRead, Repeat, Var.ini,Var,Repeat
 	IniRead, msgs, Var.ini,Var,msgs
 	IniRead, user, Var.ini,Var,user
 
@@ -28,11 +29,13 @@ gui, font, s12, Verdana  ; Set 10-point Verdana
 Gui +border -minimizebox -maximizebox
 
 Gui, Add, Text,,Activation:
+Gui, Add, Text,,Repeat:
 Gui, Add, Text,,msgs:
 Gui, Add, Text,,user:
 
-Gui, Add, Edit, vActivation w60 ym, %Activation%
-Gui, Add, Edit, vmsgs w40, %msgs%
+Gui, Add, Edit, vActivation w120 ym, %Activation%
+Gui, Add, Edit, vRepeat w120, %Repeat%
+Gui, Add, Edit, vmsgs w120, %msgs%
 Gui, Add, Edit, vuser w120, %user%
 
 Gui, Add, Checkbox, vdispose Checked%dispose%, Dispose
@@ -88,6 +91,7 @@ Gui, Submit
 ;Saves Variables & Quit
 
 IniWrite, %Activation%, Var.ini,Var, Activation
+IniWrite, %Repeat%, Var.ini,Var, Repeat
 IniWrite, %msgs%, Var.ini,Var, msgs
 IniWrite, %user%, Var.ini,Var, user
 

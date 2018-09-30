@@ -8,6 +8,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 global messages := []
 global Activation = 9999				; Activation time 0000 - 2359
+global Repeat = 0
 global wa_receiver_name := "robin"		; Recipiant name 
 global dispose = false		; closes chrome & connection
 global blackout = false		; monitr blackout during idle
@@ -18,6 +19,7 @@ RunWait, GUI.ahk
 sleep, 500
 
 IniRead, Activation, Var.ini,Var,Activation
+IniRead, Repeat, Var.ini,Var,Repeat
 IniRead, msgs, Var.ini,Var,msgs
 IniRead, wa_receiver_name, Var.ini,Var,user
 
@@ -51,11 +53,10 @@ FormatTime, TimeToMeet,,HHmm
 
 if(TimeToMeet = Activation OR Activation = 9999)
 {
-	SplashTextOn,,, Go!
-	sleep, 500
-	SplashTextOff
 
-
+SplashTextOn,,, Go!
+sleep, 500
+SplashTextOff
 Gui, Hide
 	
 FileCreateDir, ChromeProfile
@@ -88,7 +89,7 @@ WA.Evaluate("setTimeout(() => { search(""" . wa_receiver_name . """) }, 500);")
 sleep, 1000
 
 ; ~~~ OPEND CONTACT ~~~ 
-
+GO:
 CoordMode Pixel
 MouseMove, A_ScreenWidth // 2, A_ScreenHeight - 80 ; Adjust offset depending on screen
 Click,
@@ -101,6 +102,12 @@ for index, element in messages
    ; MsgBox % "Element number " . index . " is " . element
    WA_SendMessage(element)
 }
+
+Repeat := Repeat-1
+if(Repeat > 0)	{
+	Goto, GO
+}
+
 if(blackout)
 	Gui, Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight%
 if(shutdown)	{
