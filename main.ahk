@@ -15,6 +15,7 @@ global shutdown = false		; shutdown on completion
 global realwait = false		; simulates real waiting time
 
 RunWait, GUI.ahk
+sleep, 500
 
 IniRead, Activation, Var.ini,Var,Activation
 IniRead, msgs, Var.ini,Var,msgs
@@ -48,7 +49,7 @@ FormatTime, TimeToMeet,,HHmm
 
 ;msgbox, %TimeToMeet% %Activation%
 
-if(TimeToMeet = Activationa or Activation = 9999)
+if(TimeToMeet = Activation OR Activation = 9999)
 {
 	SplashTextOn,,, Go!
 	sleep, 500
