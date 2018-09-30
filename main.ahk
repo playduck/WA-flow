@@ -8,14 +8,28 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 global messages := []
 global Activation = 9999				; Activation time 0000 - 2359
-global wa_receiver_name := "__"		; Recipiant name 
+global wa_receiver_name := "robin"		; Recipiant name 
 global dispose = false		; closes chrome & connection
 global blackout = false		; monitr blackout during idle
 global shutdown = false		; shutdown on completion
-global realwait = true		; simulates real waiting time
+global realwait = false		; simulates real waiting time
 
-; Message array (no limit)
-messages.Push("")
+RunWait, GUI.ahk
+
+IniRead, Activation, Var.ini,Var,Activation
+IniRead, msgs, Var.ini,Var,msgs
+IniRead, wa_receiver_name, Var.ini,Var,user
+
+IniRead, dispose, Var.ini,Var,dispose
+IniRead, blackout, Var.ini,Var,blackout
+IniRead, shutdown, Var.ini,Var,shutdown
+IniRead, realwait, Var.ini,Var,realwait
+
+loop, %msgs%
+{
+	IniRead, tmp, Var.ini,Var,m%A_Index%
+	messages.Push(tmp)
+}
 
 ;=======================================================	CHECK TIME
 
@@ -86,7 +100,8 @@ for index, element in messages
    ; MsgBox % "Element number " . index . " is " . element
    WA_SendMessage(element)
 }
-Gui, Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight%
+if(blackout)
+	Gui, Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight%
 if(shutdown)	{
 	Shutdown, 12 ; force + powerdown
 }
